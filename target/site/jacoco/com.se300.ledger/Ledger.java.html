@@ -34,7 +34,7 @@ public class Ledger {
      * @return
      */
     public static synchronized Ledger getInstance(String name, String description, String seed) {
-<span class="fc bfc" id="L37" title="All 2 branches covered.">        if (ledger == null) {</span>
+<span class="pc bpc" id="L37" title="1 of 2 branches missed.">        if (ledger == null) {</span>
 <span class="fc" id="L38">            ledger = new Ledger(name, description, seed);</span>
         }
 <span class="fc" id="L40">        return ledger;</span>
@@ -133,8 +133,8 @@ public class Ledger {
 <span class="nc" id="L133">            throw new LedgerException(&quot;Process Transaction&quot;, &quot;Note Length Must Be Less Than 1024 Chars&quot;);</span>
         }
 
-<span class="fc bfc" id="L136" title="All 2 branches covered.">        if(ledger.getTransaction(transaction.getTransactionId()) != null){</span>
-<span class="fc" id="L137">            throw new LedgerException(&quot;Process Transaction&quot;, &quot;Transaction Id Must Be Unique&quot;);</span>
+<span class="pc bpc" id="L136" title="1 of 2 branches missed.">        if(ledger.getTransaction(transaction.getTransactionId()) != null){</span>
+<span class="nc" id="L137">            throw new LedgerException(&quot;Process Transaction&quot;, &quot;Transaction Id Must Be Unique&quot;);</span>
         }
 
 <span class="fc" id="L140">        Account tempPayerAccount = transaction.getPayer();</span>
@@ -208,8 +208,8 @@ public class Ledger {
 <span class="fc" id="L208">        Block block = blockMap.lastEntry().getValue();</span>
 <span class="fc" id="L209">        Account account = block.getAccount(address);</span>
 
-<span class="fc bfc" id="L211" title="All 2 branches covered.">        if (account == null)</span>
-<span class="fc" id="L212">            throw new LedgerException(&quot;Get Account Balance&quot;, &quot;Account Does Not Exist&quot;);</span>
+<span class="pc bpc" id="L211" title="1 of 2 branches missed.">        if (account == null)</span>
+<span class="nc" id="L212">            throw new LedgerException(&quot;Get Account Balance&quot;, &quot;Account Does Not Exist&quot;);</span>
         else
 <span class="fc" id="L214">            return account.getBalance();</span>
     }
