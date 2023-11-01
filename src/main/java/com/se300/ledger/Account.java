@@ -1,11 +1,15 @@
 package com.se300.ledger;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import org.junit.jupiter.api.Test;
+
 /**
  * Account class implementation representing account in the Blockchain
  *
- * @author  Sergey L. Sundukovskiy
+ * @author Sergey L. Sundukovskiy
  * @version 1.0
- * @since   2023-10-11
+ * @since 2023-10-11
  */
 public class Account {
 
@@ -14,6 +18,7 @@ public class Account {
 
     /**
      * Account Constructor
+     * 
      * @param address
      * @param balance
      */
@@ -24,6 +29,7 @@ public class Account {
 
     /**
      * Getter Method for account address
+     * 
      * @return
      */
     public String getAddress() {
@@ -32,6 +38,7 @@ public class Account {
 
     /**
      * Setter Method for account address
+     * 
      * @param address
      */
     public void setAddress(String address) {
@@ -40,6 +47,7 @@ public class Account {
 
     /**
      * Getter method for account balance
+     * 
      * @return
      */
     public int getBalance() {
@@ -48,6 +56,7 @@ public class Account {
 
     /**
      * Setter method for account balance
+     * 
      * @param balance
      */
     public void setBalance(Integer balance) {
@@ -56,9 +65,11 @@ public class Account {
 
     /**
      * Method for creating an account copy
+     * 
      * @return
      */
     public Object clone() {
         return new Account(this.getAddress(), this.balance);
     }
+
 }

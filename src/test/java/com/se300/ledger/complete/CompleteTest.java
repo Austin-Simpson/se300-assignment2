@@ -1,11 +1,14 @@
 package com.se300.ledger.complete;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 
@@ -171,20 +174,169 @@ public class CompleteTest {
         String updatedReason = exception.getReason();
 
         // Assert
-        assertEquals("Account does not exist", updatedReason, "Expected reason to be updated to 'Account does not exist'");
+        assertEquals("Account does not exist", updatedReason,
+                "Expected reason to be updated to 'Account does not exist'");
     }
 
     // Tests for Ledger.java:
+    private Ledger ledger;
+
+    // Setup method to initialize the Ledger instance before each test
+    @BeforeEach
+    public void setUp() {
+        // Using the getInstance() method to get a Ledger instance
+        ledger = Ledger.getInstance("TestLedger", "This is a test ledger.", "TestSeed");
+    }
+
     @Test
     public void testGetName() {
-        // Arrange
-        Ledger ledger = new Ledger("TestLedger");
-
-        // Act
-        String name = ledger.getName();
-
-        // Assert
-        assertEquals("TestLedger", name, "Expected name to be 'TestLedger'");
+        // Testing the getName() method of Ledger class
+        assertEquals("TestLedger", ledger.getName(), "Expected name to be 'TestLedger'");
     }
+
+    @Test
+    public void testSetName() {
+        // Setting the name to a new value
+        ledger.setName("NewLedgerName");
+
+        // Asserting that the name has been updated
+        assertEquals("NewLedgerName", ledger.getName(), "Expected name to be 'NewLedgerName'");
+    }
+
+    // @Test
+    // public void testGetDescription() {
+    // ledger = Ledger.getInstance("TestLedger", "This is a test ledger.",
+    // "TestSeed");
+    // assertEquals("This is a test ledger.", ledger.getDescription(), "Expected
+    // description to be 'This is a test ledger.'");
+    // }
+
+    @Test
+    public void testGetDescription() {
+        String description = ledger.getDescription();
+        assertEquals("This is a test ledger.", description);
+    }
+
+    @Test
+    public void testSetDescription() {
+        // Setting the description to a new value
+        ledger.setDescription("New Description");
+
+        // Asserting that the description has been updated
+        assertEquals("New Description", ledger.getDescription(), "Expected description to be 'New Description'");
+
+        ledger.setDescription("This is a test ledger.");
+
+    }
+
+    @Test
+    public void testGetSeed() {
+        // Testing the getSeed() method of Ledger class
+        assertEquals("TestSeed", ledger.getSeed(), "Expected seed to be 'TestSeed'");
+    }
+
+    @Test
+    public void testSetSeed() {
+        // Setting the seed to a new value
+        ledger.setSeed("NewSeed");
+
+        // Asserting that the seed has been updated
+        assertEquals("NewSeed", ledger.getSeed(), "Expected seed to be 'NewSeed'");
+    }
+
+    @Test
+    public void testNoteLengthExceedsLimit() {
+        Account payer = new Account("payerAddress", 1000);
+        Account receiver = new Account("receiverAddress", 1000);
+
+        String longNote = new String(new char[1025]).replace("\0", "A");
+        Transaction transaction = new Transaction("txId3", 100, 10, longNote, payer, receiver);
+        assertThrows(LedgerException.class, () -> {
+            ledger.processTransaction(transaction);
+        }, "Note Length Must Be Less Than 1024 Chars");
+    }
+
+    // Note: This test assumes a method in your ledger to add a transaction without
+    // validation, you might need to adjust it.
+    @Test
+    public void testDuplicateTransactionId() throws LedgerException {
+        Account payer = new Account("payerAddress", 1000);
+        Account receiver = new Account("receiverAddress", 1000);
+
+        Transaction transaction1 = new Transaction("txId4", 100, 10, "Note1", payer, receiver);
+        ledger.processTransaction(transaction1); // Assumes the ledger adds it without validation.
+
+        Transaction transaction2 = new Transaction("txId4", 200, 15, "Note2", payer, receiver);
+        assertThrows(LedgerException.class, () -> {
+            ledger.processTransaction(transaction2);
+        }, "Transaction Id Must Be Unique");
+    }
+
+    @Test
+    public void testNegativeTransactionAmount() {
+        Account payer = new Account("payerAddress", 1000);
+        Account receiver = new Account("receiverAddress", 1000);
+
+        Transaction transaction = new Transaction("txId5", -100, 10, "Note", payer, receiver);
+        assertThrows(LedgerException.class, () -> {
+            ledger.processTransaction(transaction);
+        }, "Transaction Amount Is Out of Range");
+    }
+
+    // @Test
+    // void testGetAccountBalance_AccountDoesNotExist() {
+    // String nonExistentAddress = "someRandomAddress123";
+
+    // LedgerException exception = assertThrows(LedgerException.class, () -> {
+    // ledger.getAccountBalance(nonExistentAddress);
+    // });
+
+    // String expectedMessage = "Account Does Not Exist";
+    // String actualMessage = exception.getMessage(); // Using getMessage()
+
+    // System.out.println("Actual exception message: " + actualMessage); // Print
+    // out the actual exception message for debugging
+
+    // assertTrue(actualMessage != null && actualMessage.contains(expectedMessage));
+    // }
+
+    // @Test
+    // void testGetBlock_BlockDoesNotExist() {
+    // Integer nonExistentBlockNumber = 9999; // Assuming this block number doesn't
+    // exist in your blockMap
+
+    // // Expect the LedgerException to be thrown when attempting to get a
+    // non-existent
+    // // block
+    // LedgerException exception = assertThrows(LedgerException.class, () -> {
+    // ledger.getBlock(nonExistentBlockNumber);
+    // });
+
+    // // Check if the thrown exception message matches the expected message
+    // String expectedMessage = "Block Does Not Exist";
+    // String actualMessage = exception.getMessage(); // Assuming your
+    // LedgerException uses getMessage() for this
+
+    // assertTrue(actualMessage != null && actualMessage.contains(expectedMessage));
+    // }
+
+    // @Test
+    // void testGetNumberOfBlocks() {
+    //     // Given
+    //     int expectedNumberOfBlocks = 3;  // Example number of blocks to add
+    
+    //     // Add blocks to the ledger using a possible method
+    //     for (int i = 0; i < expectedNumberOfBlocks; i++) {
+    //         Block newBlock = new Block(i, "somePreviousHash");
+    //         ledger.addBlock(newBlock);  // Assuming there is a method addBlock in the Ledger class
+    //     }
+    
+    //     // When
+    //     int actualNumberOfBlocks = ledger.getNumberOfBlocks();
+    
+    //     // Then
+    //     assertEquals(expectedNumberOfBlocks, actualNumberOfBlocks, "Number of blocks returned is not as expected.");
+    // }
+    
 
 }

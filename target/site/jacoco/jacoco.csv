@@ -1,7 +1,7 @@
 GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
 Assignment2,com.se300.ledger,LedgerException,0,23,0,0,0,10,0,5,0,5
 Assignment2,com.se300.ledger,Account,0,32,0,0,0,11,0,6,0,6
-Assignment2,com.se300.ledger,Transaction,0,79,0,0,0,29,0,14,0,14
+Assignment2,com.se300.ledger,Transaction,0,81,0,0,0,32,0,14,0,14
 Assignment2,com.se300.ledger,Block,0,67,0,0,0,23,0,13,0,13
-Assignment2,com.se300.ledger,Ledger,67,483,9,47,18,105,15,31,6,12
+Assignment2,com.se300.ledger,Ledger,39,513,6,50,8,106,7,39,1,17
 Assignment2,com.se300.ledger,MerkleTrees,0,150,0,10,0,36,0,10,0,5

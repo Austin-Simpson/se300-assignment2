@@ -1,6 +1,8 @@
 package com.se300.ledger;
 
 import java.util.*;
+import java.util.Map.Entry;
+
 import static java.util.Map.*;
 
 /**
@@ -208,10 +210,14 @@ public class Ledger {
         Block block = blockMap.lastEntry().getValue();
         Account account = block.getAccount(address);
 
-        if (account == null)
+        
+        if (account == null){
             throw new LedgerException("Get Account Balance", "Account Does Not Exist");
+        }
         else
+        {
             return account.getBalance();
+        }
     }
 
     /**
