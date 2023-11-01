@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.se300.ledger.assumptions.AssumptionsTest
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.110 s -- in com.se300.ledger.assumptions.AssumptionsTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.172 s -- in com.se300.ledger.assumptions.AssumptionsTest
