@@ -14,10 +14,12 @@ import com.se300.ledger.MerkleTrees;
 import com.se300.ledger.Transaction;
 
 import static org.mockito.Mockito.*;
-// import java.util.List;      
-// import java.util.ArrayList; 
 
+import com.se300.ledger.Block;
 
+import com.se300.ledger.LedgerException;
+
+import com.se300.ledger.Ledger;
 
 public class CompleteTest {
 
@@ -27,7 +29,7 @@ public class CompleteTest {
      * 2. Produce/Print Identical Results to Command Line DriverTest
      * 3. Produce Quality Report
      */
-    
+
     // Tests for Transaction.java:
     @Test
     public void testSetTransactionId() {
@@ -64,14 +66,14 @@ public class CompleteTest {
         transaction.setPayer(payer);
         assertEquals(payer, transaction.getPayer());
     }
-    
+
     @Test
     public void testSetReceiver() {
         Transaction transaction = new Transaction(null, null, null, null, null, null);
         Account receiver = new Account("ReceiverAddress456", 1500); // Using the provided Account constructor
         transaction.setReceiver(receiver);
         assertEquals(receiver, transaction.getReceiver());
-    }  
+    }
 
     // Test for Account.java:
     @Test
@@ -86,7 +88,6 @@ public class CompleteTest {
         assertEquals("NewAddress101", account.getAddress());
     }
 
-
     // Test for MerkleTree.java:
     @Test
     public void testGetSHA2HexValueException() throws NoSuchAlgorithmException {
@@ -97,13 +98,93 @@ public class CompleteTest {
 
             MerkleTrees merkleTrees = new MerkleTrees(new ArrayList<>());
 
-            // As the exception is mocked, calling getSHA2HexValue should now enter the catch block
+            // As the exception is mocked, calling getSHA2HexValue should now enter the
+            // catch block
             String result = merkleTrees.getSHA2HexValue("test");
 
             // Assert the result
             assertEquals("", result); // as the catch block returns an empty string
         }
 
+    }
+
+    // Tests for Block.java:
+    @Test
+    public void testSetBlockNumber() {
+        // Arrange
+        Block block = new Block(1, "previousHashSample");
+        Integer newBlockNumber = 2;
+
+        // Act
+        block.setBlockNumber(newBlockNumber);
+
+        // Assert
+        assertEquals(newBlockNumber, block.getBlockNumber());
+    }
+
+    @Test
+    public void testSetPreviousHash() {
+        // Arrange
+        Block block = new Block(1, "previousHashSample");
+        String newPreviousHash = "newPreviousHashSample";
+
+        // Act
+        block.setPreviousHash(newPreviousHash);
+
+        // Assert
+        assertEquals(newPreviousHash, block.getPreviousHash());
+    }
+
+    // Tests for LedgerException.java:
+    @Test
+    public void testGetAction() {
+        // Arrange
+        LedgerException exception = new LedgerException("AddAccount", "Account already exists");
+
+        // Act
+        String action = exception.getAction();
+
+        // Assert
+        assertEquals("AddAccount", action, "Expected action to be 'AddAccount'");
+    }
+
+    @Test
+    public void testSetAction() {
+        // Arrange
+        LedgerException exception = new LedgerException("AddAccount", "Account already exists");
+
+        // Act
+        exception.setAction("RemoveAccount");
+        String updatedAction = exception.getAction();
+
+        // Assert
+        assertEquals("RemoveAccount", updatedAction, "Expected action to be updated to 'RemoveAccount'");
+    }
+
+    @Test
+    public void testSetReason() {
+        // Arrange
+        LedgerException exception = new LedgerException("AddAccount", "Account already exists");
+
+        // Act
+        exception.setReason("Account does not exist");
+        String updatedReason = exception.getReason();
+
+        // Assert
+        assertEquals("Account does not exist", updatedReason, "Expected reason to be updated to 'Account does not exist'");
+    }
+
+    // Tests for Ledger.java:
+    @Test
+    public void testGetName() {
+        // Arrange
+        Ledger ledger = new Ledger("TestLedger");
+
+        // Act
+        String name = ledger.getName();
+
+        // Assert
+        assertEquals("TestLedger", name, "Expected name to be 'TestLedger'");
     }
 
 }
