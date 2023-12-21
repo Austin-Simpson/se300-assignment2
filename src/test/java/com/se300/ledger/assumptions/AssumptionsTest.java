@@ -74,4 +74,43 @@ public class AssumptionsTest {
                 });
 
     }
+
+    // my tests (at least 3):
+
+    // 1. Test for account creation
+    @Test
+    void testAccountCreation(){
+        assumingThat(mary != null && sergey != null,
+                () -> {
+                    Account mary = ledger.getUncommittedBlock().getAccount("mary");
+                    Account sergey = ledger.getUncommittedBlock().getAccount("sergey");
+                    assumeTrue(mary != null);
+                    assumeTrue(sergey != null);
+                });
+    }
+    
+
+    // 2. Test for invalid account balance
+    @Test
+    void testInvalidAccountBalance(){
+        assumingThat(mary.getBalance() == sergey.getBalance(),
+                () -> {
+                    Account mary = ledger.getUncommittedBlock().getAccount("mary");
+                    Account sergey = ledger.getUncommittedBlock().getAccount("sergey");
+                    assumeTrue(mary != sergey);
+                });
+    }
+
+    // 3. Test transactions processed correctly
+    @Test
+    void testTransactionProcessed(){
+        assumingThat(ledger.getTransaction("11") != null,
+                () -> {
+                    Account master = ledger.getUncommittedBlock().getAccount("master");
+                    Account mary = ledger.getUncommittedBlock().getAccount("mary");
+                    Transaction nextTransaction = new Transaction("11", 10, 10, "simple test", master, mary);
+                    ledger.processTransaction(nextTransaction);
+                });
+    }
+    
 }

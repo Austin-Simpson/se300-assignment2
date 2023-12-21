@@ -256,15 +256,13 @@ public class CompleteTest {
         }, "Note Length Must Be Less Than 1024 Chars");
     }
 
-    // Note: This test assumes a method in your ledger to add a transaction without
-    // validation, you might need to adjust it.
     @Test
     public void testDuplicateTransactionId() throws LedgerException {
         Account payer = new Account("payerAddress", 1000);
         Account receiver = new Account("receiverAddress", 1000);
 
         Transaction transaction1 = new Transaction("txId4", 100, 10, "Note1", payer, receiver);
-        ledger.processTransaction(transaction1); // Assumes the ledger adds it without validation.
+        ledger.processTransaction(transaction1); 
 
         Transaction transaction2 = new Transaction("txId4", 200, 15, "Note2", payer, receiver);
         assertThrows(LedgerException.class, () -> {

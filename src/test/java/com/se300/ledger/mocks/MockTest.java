@@ -20,13 +20,12 @@ public class MockTest {
     @Test
     void testPayerBalanceCheck() throws LedgerException {
 
-        Ledger ledger = Ledger.getInstance("test", "test ledger 2023","chapman");
+        Ledger ledger = Ledger.getInstance("test", "test ledger 2023", "chapman");
 
         Account mary = mock(Account.class);
         Account sergey = mock(Account.class);
 
-        Transaction sampleTransaction =
-                new Transaction("1",1000,10,"simple test", mary, sergey);
+        Transaction sampleTransaction = new Transaction("1", 1000, 10, "simple test", mary, sergey);
 
         assertThrows(LedgerException.class, () -> ledger.processTransaction(sampleTransaction));
 
@@ -34,4 +33,40 @@ public class MockTest {
 
     }
 
+    // my tests (at least 2):
+
+    // 1. Test for account balance
+    @Test
+    void testBalance() throws LedgerException {
+        Ledger ledger = Ledger.getInstance("test", "test ledger 2023", "chapman");
+        Account mary = mock(Account.class);
+        Account sergey = mock(Account.class);
+
+        Transaction transaction1 = new Transaction("1", 1000, 10, "simple test", mary, sergey);
+        Transaction transaction2 = new Transaction("2", 1000, 10, "simple test", mary, sergey);
+        
+        assertThrows(LedgerException.class, () -> ledger.processTransaction(transaction1));
+        assertThrows(LedgerException.class, () -> ledger.processTransaction(transaction2));
+
+        verify(mary, times(2)).getBalance();
+
+    }
+
+    // 2. Test for number of transactions
+    @Test
+    void testNumTransactions() throws LedgerException {
+        Ledger ledger = Ledger.getInstance("test", "test ledger 2023", "chapman");
+        Account mary = mock(Account.class);
+        Account sergey = mock(Account.class);
+
+        Transaction transaction1 = new Transaction("1", 1000, 10, "simple test", mary, sergey);
+        Transaction transaction2 = new Transaction("2", 1000, 10, "simple test", mary, sergey);
+        
+        assertThrows(LedgerException.class, () -> ledger.processTransaction(transaction1));
+        assertThrows(LedgerException.class, () -> ledger.processTransaction(transaction2));
+        assertThrows(LedgerException.class, () -> ledger.processTransaction(transaction2));
+
+        verify(mary, times(3)).getBalance();
+
+    }
 }
